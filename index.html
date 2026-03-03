@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Test API REST</title>
+</head>
+
+<body>
+
+<h2>Test API REST (GET, POST, PUT, DELETE)</h2>
+
+<button onclick="getAll()">GET Tutti</button>
+<button onclick="getOne()">GET id=1</button>
+<button onclick="postData()">POST</button>
+<button onclick="putData()">PUT id=1</button>
+<button onclick="deleteData()">DELETE id=1</button>
+
+<pre id="demo"></pre>
+
+<script>
+
+const url = "index.php";
+
+// funzione per mostrare risultato
+function mostraRisultato(data) {
+    document.getElementById("demo").textContent =
+        JSON.stringify(data, null, 2);
+}
+
+// GET tutti
+function getAll() {
+    fetch(url)
+    .then(res => res.json())
+    .then(data => mostraRisultato(data));
+}
+
+// GET singolo
+function getOne() {
+    fetch(url + "?id=1")
+    .then(res => res.json())
+    .then(data => mostraRisultato(data));
+}
+
+// POST
+function postData() {
+
+    const formData = {
+        nome: "Nuovo Utente",
+        valore: 300
+    };
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => mostraRisultato(data));
+}
+
+// PUT
+function putData() {
+
+    const formData = {
+        nome: "Utente Modificato",
+        valore: 999
+    };
+
+    fetch(url + "?id=1", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => mostraRisultato(data));
+}
+
+// DELETE
+function deleteData() {
+
+    fetch(url + "?id=1", {
+        method: "DELETE",
+        headers: {
+            "Accept": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => mostraRisultato(data));
+}
+
+</script>
+
+</body>
+</html>
